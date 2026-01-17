@@ -4,9 +4,9 @@
    DESIGN SYSTEM VARIABLES
    =========================== */
 :root {
-  /* Background Gradient */
+  /* Background Gradient - Forest Green Theme */
   --bg-primary: #152624;
-  --bg-secondary: #11151a;
+  --bg-secondary: #0d1614;
 
   /* Accent Colors */
   --accent-teal: #30B5A6;
@@ -18,15 +18,15 @@
   --text-secondary: rgba(255, 255, 255, 0.7);
   --text-muted: rgba(255, 255, 255, 0.5);
 
-  /* Glass Effects */
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-bg-hover: rgba(255, 255, 255, 0.08);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-border-hover: rgba(255, 255, 255, 0.2);
+  /* Glass Effects - More subtle for dark theme */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-hover: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(255, 255, 255, 0.15);
 
   /* Shadows */
   --shadow-glow: 0 0 40px rgba(48, 181, 166, 0.3);
-  --shadow-elevation: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-elevation: 0 8px 32px rgba(0, 0, 0, 0.6);
 
   /* Animations */
   --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);

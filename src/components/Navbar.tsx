@@ -14,110 +14,126 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-    const navRef = useRef<HTMLElement>(null);
-    const buttonRef = useRef<HTMLAnchorElement>(null);
-    const [scrolled, setScrolled] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+    const navRef = useRef<HTMLDivElement>(null);
+    const logoRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
+            setIsScrolled(window.scrollY > 50);
         };
+
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Magnetic button effect
     useEffect(() => {
-        const button = buttonRef.current;
-        if (!button) return;
+        // Animate navbar and logo
+        gsap.set(logoRef.current, { opacity: 0, x: -30 });
+        gsap.set(navRef.current, { opacity: 0, y: -30 });
 
-        const handleMouseMove = (e: MouseEvent) => {
-            const rect = button.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
+        const tl = gsap.timeline({ delay: 2 });
 
-            gsap.to(button, {
-                x: x * 0.3,
-                y: y * 0.3,
-                duration: 0.3,
-                ease: 'power2.out',
-            });
-        };
-
-        const handleMouseLeave = () => {
-            gsap.to(button, {
-                x: 0,
+        tl.to(logoRef.current, {
+            opacity: 1,
+            x: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+        })
+            .to(navRef.current, {
+                opacity: 1,
                 y: 0,
-                duration: 0.5,
-                ease: 'elastic.out(1, 0.3)',
-            });
-        };
-
-        button.addEventListener('mousemove', handleMouseMove);
-        button.addEventListener('mouseleave', handleMouseLeave);
-
-        return () => {
-            button.removeEventListener('mousemove', handleMouseMove);
-            button.removeEventListener('mouseleave', handleMouseLeave);
-        };
+                duration: 0.8,
+                ease: 'power3.out',
+            }, '-=0.5');
     }, []);
 
     return (
-        <nav
-            ref={navRef}
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500
-        ${scrolled ? 'py-4' : 'py-6'}
-      `}
-        >
-            <div className="container mx-auto px-6">
-                <div
-                    className={`flex items-center justify-between px-6 py-3 rounded-full transition-all duration-500
-            ${scrolled
-                            ? 'bg-[rgba(255,255,255,0.05)] backdrop-blur-xl border border-[rgba(255,255,255,0.1)] shadow-lg'
-                            : 'bg-transparent'
-                        }
-          `}
-                >
-                    {/* Logo */}
-                    <Link href="/" className="flex items-center gap-3 group">
-                        <div className="relative w-16 h-16 flex items-center justify-center">
-                            <Image
-                                src="/images/RD logo.svg"
-                                alt="Rare Developers"
-                                width={160}
-                                height={160}
-                                className="object-contain transition-transform duration-300 group-hover:scale-110"
-                            />
-                        </div>
-                        <span className="text-lg font-semibold text-white hidden sm:block">
-                            Rare Developers
-                        </span>
-                    </Link>
-
-                    {/* Navigation Links */}
-                    <div className="hidden md:flex items-center gap-8">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.name}
-                                href={link.href}
-                                className="text-[rgba(255,255,255,0.7)] hover:text-white text-sm font-medium transition-colors duration-300 relative group"
-                            >
-                                {link.name}
-                                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#30B5A6] transition-all duration-300 group-hover:w-full" />
-                            </Link>
-                        ))}
+        <>
+            {/* === FLOATING LOGO (MUCH BIGGER - 200px) === */}
+            <div
+                ref={logoRef}
+                className="fixed top-2 left-10 z-[60]"
+            >
+                <Link href="/" className="block group">
+                    <div className="relative w-[200px] h-[200px] flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                        <Image
+                            src="/images/RD logo.svg"
+                            alt="Rare Developers"
+                            width={200}
+                            height={200}
+                            className="object-contain drop-shadow-[0_0_20px_rgba(48,181,166,0.3)]"
+                            priority
+                        />
                     </div>
+                </Link>
+            </div>
 
-                    {/* CTA Button */}
+            {/* === APPLE LIQUID GLASS NAVBAR === */}
+            <nav
+                ref={navRef}
+                className={`fixed top-5 left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ${isScrolled ? 'scale-[0.98]' : 'scale-100'
+                    }`}
+                style={{
+                    borderRadius: '24px',
+                    /* Apple Liquid Glass Effect */
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.08) 100%)',
+                    backdropFilter: 'blur(40px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+                    border: '1px solid rgba(255,255,255,0.18)',
+                    boxShadow: `
+            0 8px 32px rgba(0,0,0,0.25),
+            inset 0 1px 0 rgba(255,255,255,0.2),
+            inset 0 -1px 0 rgba(255,255,255,0.05),
+            0 0 0 1px rgba(255,255,255,0.05)
+          `,
+                }}
+            >
+                {/* Inner glossy highlight */}
+                <div
+                    className="absolute inset-0 rounded-[24px] pointer-events-none"
+                    style={{
+                        background: 'linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 50%)',
+                        borderRadius: '24px',
+                    }}
+                />
+
+                <div className="relative flex items-center gap-1 px-5 py-3.5">
+                    {/* Navigation Links */}
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.name}
+                            href={link.href}
+                            className="relative px-5 py-2.5 text-sm font-medium text-[rgba(255,255,255,0.85)] hover:text-white transition-all duration-300 rounded-xl hover:bg-[rgba(255,255,255,0.1)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]"
+                        >
+                            {link.name}
+                        </Link>
+                    ))}
+
+                    {/* Contact Button - Glossy Teal */}
                     <Link
-                        ref={buttonRef}
                         href="#contact"
-                        className="btn-primary text-sm px-6 py-2.5"
+                        className="relative ml-3 px-7 py-2.5 text-sm font-semibold text-white rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_25px_rgba(48,181,166,0.4)]"
+                        style={{
+                            background: 'linear-gradient(135deg, #3dd4c3 0%, #30B5A6 50%, #28a090 100%)',
+                            boxShadow: `
+                0 4px 15px rgba(48,181,166,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.3),
+                inset 0 -1px 0 rgba(0,0,0,0.1)
+              `,
+                        }}
                     >
-                        Contact Us
+                        <span className="relative z-10">Contact Us</span>
+                        {/* Glossy shine overlay */}
+                        <div
+                            className="absolute inset-0 pointer-events-none"
+                            style={{
+                                background: 'linear-gradient(180deg, rgba(255,255,255,0.25) 0%, transparent 50%)',
+                            }}
+                        />
                     </Link>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </>
     );
 }
