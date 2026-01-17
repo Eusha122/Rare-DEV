@@ -50,18 +50,17 @@ export default function Navbar() {
 
     return (
         <>
-            {/* === FLOATING LOGO (MUCH BIGGER - 200px) === */}
+            {/* === LOGO (Absolute - Scrolls away) === */}
             <div
                 ref={logoRef}
-                className="fixed top-2 left-10 z-[60]"
+                className="absolute top-6 left-6 md:left-10 z-[60]"
             >
                 <Link href="/" className="block group">
-                    <div className="relative w-[200px] h-[200px] flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                    <div className="relative w-28 h-28 md:w-[200px] md:h-[200px] flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
                         <Image
                             src="/images/RD logo.svg"
                             alt="Rare Developers"
-                            width={200}
-                            height={200}
+                            fill
                             className="object-contain drop-shadow-[0_0_20px_rgba(48,181,166,0.3)]"
                             priority
                         />
@@ -72,12 +71,14 @@ export default function Navbar() {
             {/* === APPLE LIQUID GLASS NAVBAR === */}
             <nav
                 ref={navRef}
-                className={`fixed top-5 left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ${isScrolled ? 'scale-[0.98]' : 'scale-100'
+                className={`fixed top-5 left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ${isScrolled ? 'scale-[0.98] opacity-90' : 'scale-100 opacity-100'
                     }`}
                 style={{
-                    borderRadius: '24px',
+                    borderRadius: '9999px', // Fully Round (Capsule)
                     /* Apple Liquid Glass Effect */
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.08) 100%)',
+                    background: isScrolled
+                        ? 'rgba(255, 255, 255, 0.05)' // More transparent on scroll
+                        : 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.08) 100%)',
                     backdropFilter: 'blur(40px) saturate(180%)',
                     WebkitBackdropFilter: 'blur(40px) saturate(180%)',
                     border: '1px solid rgba(255,255,255,0.18)',
@@ -91,10 +92,9 @@ export default function Navbar() {
             >
                 {/* Inner glossy highlight */}
                 <div
-                    className="absolute inset-0 rounded-[24px] pointer-events-none"
+                    className="absolute inset-0 rounded-full pointer-events-none"
                     style={{
                         background: 'linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 50%)',
-                        borderRadius: '24px',
                     }}
                 />
 
